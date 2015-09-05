@@ -1,0 +1,19 @@
+{
+    "name": "pmvc-plugin/session",
+    "description": "PMVC session lib",
+    "type": "library",
+    "keywords": ["session", "pmvc", "plug-in"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hill",
+            "email": "hill@kimo.com"
+        }
+    ],
+    "require": {
+        "pmvc/pmvc": "*",
+        "pmvc-plugin/guid": "*",
+        "pmvc-plugin/curl": "*"
+    },
+    "minimum-stability": "dev"
+}
