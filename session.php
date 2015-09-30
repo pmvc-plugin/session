@@ -29,6 +29,9 @@ class session extends \PMVC\PlugIn
         $return = '';
         $curl->get($url, function($serverRespond) use (&$return){
             $arr = json_decode($serverRespond->body); 
+            if (!$arr) {
+                trigger_error($serverRespond->body);
+            }
             $return = $arr->session;
         });
         $curl->run();
