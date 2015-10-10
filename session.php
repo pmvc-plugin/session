@@ -30,7 +30,7 @@ class session extends \PMVC\PlugIn
         $curl->get($url, function($serverRespond) use (&$return){
             $arr = json_decode($serverRespond->body); 
             if (!$arr) {
-                trigger_error($serverRespond->body);
+                return !trigger_error($serverRespond->body);
             }
             $return = $arr->session;
         });
