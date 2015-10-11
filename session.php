@@ -11,7 +11,9 @@ class session extends \PMVC\PlugIn
     public function init()
     {
         session_set_save_handler($this, true);
-        session_start();
+        if (empty($this['disable_start'])) {
+            session_start();
+        }
     }
 
     public function open( $save_path , $session_name )
