@@ -29,10 +29,14 @@ class session extends \PMVC\PlugIn
         $curl = \PMVC\plug('curl');
         $url = \PMVC\getOption('INTERNAL').'/session/'.$session_id;
         $return = '';
-        $curl->get($url, function($serverRespond) use (&$return){
+        $curl->get($url, function($serverRespond) use (&$return, $url){
             $arr = json_decode($serverRespond->body); 
             if (!$arr) {
-                return !trigger_error($serverRespond->body);
+                return !trigger_error(
+                    "Get Session fail\n".
+                    $url."\n".
+                    $serverRespond->body
+                );
             }
             $return = $arr->session;
         });
