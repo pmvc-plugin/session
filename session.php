@@ -1,68 +1,25 @@
 <?php
 namespace PMVC\PlugIn\session;
 
-// \PMVC\l(__DIR__.'/xxx.php');
+use PMVC\PlugIn; 
+use SessionHandlerInterface;
+
+\PMVC\l(__DIR__.'/src/BaseSession.php');
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\session';
 
-class session extends \PMVC\PlugIn
-    implements \SessionHandlerInterface
+class session extends PlugIn
 {
     public function init()
     {
-        session_set_save_handler($this, true);
+        if (empty($this['api'])) {
+            $api = \PMVC\plug('url')->realUrl();
+            $api = str_replace('index.php','api.php', $api); 
+            $this['api'] = $api.'/session/';
+        }
+        session_set_save_handler($this->curl(), true);
         if (empty($this['disable_start'])) {
             session_start();
         }
-    }
-
-    public function open( $save_path , $session_name )
-    {
-    }
-
-    public function close()
-    {
-    }
-
-    public function read( $session_id )
-    {
-        $curl = \PMVC\plug('curl');
-        $url = \PMVC\getOption('INTERNAL').'/session/'.$session_id;
-        $return = '';
-        $curl->get($url, function($serverRespond) use (&$return, $url){
-            $arr = json_decode($serverRespond->body); 
-            if (!$arr) {
-                return !trigger_error(
-                    "Get Session fail\n".
-                    $url."\n".
-                    $serverRespond->body
-                );
-            }
-            $return = $arr->session;
-        });
-        $curl->run();
-        return $return;
-    }
-
-    public function write($session_id , $session_data )
-    {
-        $this[$session_id] = $session_data;
-        $curl = \PMVC\plug('curl');
-        $url = \PMVC\getOption('INTERNAL').'/session/'.$session_id;
-        $curl->post($url, null, array('data'=>$session_data));
-        $curl->run();
-    }
-
-    public function destroy( $session_id )
-    {
-        $curl = \PMVC\plug('curl');
-        $url = \PMVC\getOption('INTERNAL').'/session/'.$session_id;
-        $curl->delete($url);
-        $curl->run();
-    }
-
-    public function gc( $maxlifetime )
-    {
-        return true;
     }
 }
