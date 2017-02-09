@@ -5,15 +5,25 @@ ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\curl';
 
 class curl extends BaseSession
 {
+    private $_api;
+
     public function __invoke()
     {
+        if (empty($this->caller['api'])) {
+            return !trigger_error(
+                'Need set session api url',
+                E_USER_WARNING
+            );
+        } else {
+            $this->_api = $this->caller['api'];
+        }
         return $this;
     }
 
     public function destroy( $session_id )
     {
         $curl = \PMVC\plug('curl');
-        $url = $this->caller['api'].$session_id;
+        $url = $this->_api.$session_id;
         $curl->delete($url);
         $curl->process();
     }
@@ -21,7 +31,7 @@ class curl extends BaseSession
     public function read( $session_id )
     {
         $curl = \PMVC\plug('curl');
-        $url = $this->caller['api'].$session_id;
+        $url = $this->_api.$session_id;
         $return = '';
         $curl->get($url, function($serverRespond) use (&$return, $url){
             $arr = json_decode($serverRespond->body); 
@@ -41,7 +51,7 @@ class curl extends BaseSession
     public function write($session_id , $session_data )
     {
         $curl = \PMVC\plug('curl');
-        $url = $this->caller['api'].$session_id;
+        $url = $this->_api.$session_id;
         $curl->post($url, null, array('data'=>$session_data));
         $curl->process();
     }
