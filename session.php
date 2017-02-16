@@ -11,11 +11,20 @@ class session extends PlugIn
 {
     public function init()
     {
-        \PMVC\set($this, \PMVC\value(\PMVC\getOption('PLUGIN'), [$this[\PMVC\NAME]]));
-        if ($this['handler']) {
-            session_set_save_handler($this->{$this['handler']}(), true);
+        \PMVC\set(
+            $this,
+            \PMVC\get(
+                \PMVC\getOption('PLUGIN'),
+                $this[\PMVC\NAME]
+            )
+        );
+        if ($this['saveHandler']) {
+            session_set_save_handler($this->{$this['saveHandler']}(), true);
         }
-        if (empty($this['disable_start'])) {
+        if ($this['name']) {
+            session_name($this['name']);
+        }
+        if (empty($this['disableStart'])) {
             session_start();
         }
     }
