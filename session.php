@@ -24,6 +24,14 @@ class session extends PlugIn
         if ($this['name']) {
             session_name($this['name']);
         }
+        $cookie = \PMVC\get($_COOKIE,$this['name']);
+        if (!empty($cookie)) {
+            $this->start();
+        }
+    }
+    
+    public function start()
+    {
         if (empty($this['disableStart'])) {
             session_start();
         }
