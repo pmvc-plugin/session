@@ -34,6 +34,7 @@ class session extends PlugIn
     {
         if (empty($this['disableStart'])) {
             session_start();
+            $this['disableStart'] = true;
         }
     }
 }
