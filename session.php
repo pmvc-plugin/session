@@ -11,13 +11,6 @@ class session extends PlugIn
 {
     public function init()
     {
-        \PMVC\set(
-            $this,
-            \PMVC\get(
-                \PMVC\getOption('PLUGIN'),
-                $this[\PMVC\NAME]
-            )
-        );
         if ($this['saveHandler']) {
             session_set_save_handler($this->{$this['saveHandler']}(), true);
         }

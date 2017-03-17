@@ -8,17 +8,13 @@ abstract class BaseSession
     implements SessionHandlerInterface
 {
     public function close() { }
-
-    abstract public function destroy( $sessionId );
-
+    public function open( $savePath, $sessionName ) { }
     public function gc( $maxLifeTime )
     {
         return true;
     }
 
-    public function open( $savePath, $sessionName ) { }
-
+    abstract public function destroy( $sessionId );
     abstract public function read( $sessionId );
-
     abstract public function write( $sessionId, $sessionData );
 }
