@@ -38,18 +38,24 @@ class session extends PlugIn
                 'session_set_cookie_params',
                 $cParams 
             );
+            $this->setCookie(session_name(), session_id());
             session_start();
-            setcookie(
-                session_name(),
-                session_id(),
-                time()+$cParams['lifetime'],
-                $cParams['path'],
-                $cParams['domain'],
-                $cParams['secure'],
-                $cParams['httponly']
-            );
             $this['disableStart'] = true;
         }
+    }
+
+    public function setCookie($key, $val)
+    {
+        $cParams = $this['cookie'];
+        setcookie(
+            $key,
+            $val,
+            time()+$cParams['lifetime'],
+            $cParams['path'],
+            $cParams['domain'],
+            $cParams['secure'],
+            $cParams['httponly']
+        );
     }
 
     public function defaultCookie()
