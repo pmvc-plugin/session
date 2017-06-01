@@ -18,13 +18,15 @@ class session extends PlugIn
             session_set_save_handler($this->{$this['saveHandler']}(), true);
         }
         if ($this['name']) {
-            session_name($this['name']);
+            $name = session_name($this['name']);
+        } else {
+            $name = session_name();
         }
         $this['cookie'] = array_replace(
             $this->defaultCookie(),
             \PMVC\get($this, 'cookie', [])
         );
-        $cookie = \PMVC\get($_COOKIE,$this['name']);
+        $cookie = \PMVC\get($_COOKIE, $name);
         if (!empty($cookie)) {
             $this->start();
         }
@@ -38,7 +40,12 @@ class session extends PlugIn
                 'session_set_cookie_params',
                 $cParams 
             );
-            $this->setCookie(session_name(), session_id());
+            $name = session_name();
+            $value = \PMVC\get($_COOKIE, $name);
+            if (empty($value)) {
+                $value = session_id();
+            }
+            $this->setCookie($name, $value);
             session_start();
             $this['disableStart'] = true;
         }
