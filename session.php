@@ -65,6 +65,7 @@ class session extends PlugIn
             session_start();
             $this['disableStart'] = true;
         }
+        return $this[\PMVC\THIS];
     }
 
     public function setCookie($key, $val)
