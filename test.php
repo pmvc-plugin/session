@@ -8,7 +8,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
    /**
     * @runInSeparateProcess
     */
-    function testPlugin()
+    public function testPlugin()
     {
         set_error_handler( function (){ });
         ob_start();
@@ -17,5 +17,13 @@ class SessionTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertContains($this->_plug,$output);
     }
+
+    public function testGetSessionId()
+    {
+        $p = \PMVC\plug($this->_plug);
+        $this->assertNull($p->getSessionId());
+    }
+
+
 
 }
