@@ -82,6 +82,11 @@ class session extends PlugIn
         );
     }
 
+    public function getLifeTime()
+    {
+        return \PMVC\get($this['cookie'], 'lifetime');
+    }
+
     public function defaultCookie()
     {
         return [
