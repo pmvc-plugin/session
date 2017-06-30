@@ -68,9 +68,11 @@ class session extends PlugIn
         return $this[\PMVC\THIS];
     }
 
-    public function setCookie($key, $val)
+    public function setCookie($key, $val, array $cParams = [])
     {
-        $cParams = $this['cookie'];
+        if (empty($cParams)) {
+            $cParams = $this['cookie'];
+        }
         setcookie(
             $key,
             $val,

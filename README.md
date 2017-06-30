@@ -7,6 +7,9 @@
 session
 ===============
 
+## The options parameter was added @7.0
+   * http://php.net/manual/en/session.configuration.php
+
 ## Install with Composer
 ### 1. Download composer
    * mkdir test_folder
