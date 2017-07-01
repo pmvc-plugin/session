@@ -14,7 +14,8 @@
         "pmvc/pmvc": "*",
         "pmvc-plugin/guid": "*",
         "pmvc-plugin/url": "*",
-        "pmvc-plugin/curl": "*"
+        "pmvc-plugin/curl": "*",
+        "pmvc-plugin/cookie": "*"
     },
     "minimum-stability": "dev"
 }

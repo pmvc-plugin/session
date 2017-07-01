@@ -20,8 +20,8 @@ class session extends PlugIn
             session_set_save_handler($this->{$this['saveHandler']}(), true);
         }
         $this['cookie'] = array_replace(
-            $this->defaultCookie(),
-            \PMVC\get($this, 'cookie', [])
+            \PMVC\plug('cookie')['params'],
+            \PMVC\toArray($this['cookie'])
         );
         $sessionId = $this->getSessionId();
         if (!empty($sessionId)) {
@@ -43,7 +43,7 @@ class session extends PlugIn
     {
         if (empty($this->_sessionId)) {
             $name = $this->getName($this['name']);
-            $this->_sessionId = \PMVC\get($_COOKIE, $name);
+            $this->_sessionId = \PMVC\plug('cookie')->get($name);
         }
         return $this->_sessionId;
     }
@@ -68,35 +68,14 @@ class session extends PlugIn
         return $this[\PMVC\THIS];
     }
 
-    public function setCookie($key, $val, array $cParams = [])
+    public function setCookie($key, $val)
     {
-        if (empty($cParams)) {
-            $cParams = $this['cookie'];
-        }
-        setcookie(
-            $key,
-            $val,
-            time()+$cParams['lifetime'],
-            $cParams['path'],
-            $cParams['domain'],
-            $cParams['secure'],
-            $cParams['httponly']
-        );
+        \PMVC\plug('cookie')->
+            set($key, $val, $this['cookie']);
     }
 
     public function getLifeTime()
     {
         return \PMVC\get($this['cookie'], 'lifetime');
-    }
-
-    public function defaultCookie()
-    {
-        return [
-            'lifetime'=>86400*7,
-            'path'=>'/',
-            'domain'=>null,
-            'secure'=>false,
-            'httponly'=>true
-        ];
     }
 }
