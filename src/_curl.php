@@ -42,7 +42,7 @@ class curl extends BaseSession
                     $serverRespond->body
                 );
             }
-            $return = $arr->session;
+            $return = \PMVC\get($arr, 'session');
         });
         $curl->process();
         return $return;
